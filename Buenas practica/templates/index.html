@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr.completed {
+            background-color: #c8e6c9; /* Color verde para tareas completadas */
+        }
+
+        tr.not-completed {
+            background-color: #ffcdd2; /* Color rojo para tareas no completadas */
+        }
+
+        form {
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lista de Tareas</h1>
+    <table>
+        <tr>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        {% for task in tasks %}
+        <tr class="{{ 'completed' if task[2] else 'not-completed' }}">
+            <td>{{ task[1] }}</td>
+            <td>{{ "Hecho" if task[2] else "No Hecho" }}</td>
+            <td>
+                <a href="{{ url_for('toggle_task', task_id=task[0]) }}">Cambiar estado</a> |
+                <a href="{{ url_for('delete_task', task_id=task[0]) }}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form method="POST" action="/add">
+        <input type="text" name="task_name" placeholder="Nueva tarea" required>
+        <button type="submit">Agregar</button>
+    </form>
+</body>
+
+</html>
